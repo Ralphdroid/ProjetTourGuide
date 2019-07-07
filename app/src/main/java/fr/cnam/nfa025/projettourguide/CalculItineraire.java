@@ -28,7 +28,7 @@ import android.widget.Toast;
  * ItineraireTask
  * @author Ludovic
  */
-public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
+public class CalculItineraire extends AsyncTask<Void, Integer, Boolean> {
 	/*******************************************************/
 	/** CONSTANTES.
 	/*******************************************************/
@@ -54,7 +54,7 @@ public class ItineraireTask extends AsyncTask<Void, Integer, Boolean> {
 	 * @param editDepart
 	 * @param editArrivee
 	 */
-	public ItineraireTask(final Context context, final GoogleMap gMap, final String editDepart, final String editArrivee) {
+	public CalculItineraire(final Context context, final GoogleMap gMap, final String editDepart, final String editArrivee) {
 		this.context = context;
 		this.gMap= gMap;
 		this.editDepart = editDepart;
