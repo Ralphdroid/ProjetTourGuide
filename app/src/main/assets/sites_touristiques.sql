@@ -1,0 +1,4 @@
+INSERT INTO sitetouristique (nom, latitude, longitude , short_description, themes, description) VALUES
+("Tour eiffel", 48.8584, 2.2945, "Symbole de la France dans le monde..." , "culture;", "Symbole de la France dans le monde, vitrine de Paris, elle accueille aujourd’hui près de 7 millions de visiteurs par an (dont environ 75% d’étrangers), ce qui en fait le monument payant le plus visité au monde.!"),
+("Notre Dame", 48.853, 2.35, "Certains prétendent l'avoir vu nager..." , "culture;sortie;", "Certains prétendent l'avoir vu nager dans la Seine, pas très loin d'ici"),
+("Arc de Triomphe", 48.873792, 2.295028, "Attention il fait feux de tout bois...", "shopping;sortie;", "Attention il fait feux de tout bois pour défendre sa princesse !");
