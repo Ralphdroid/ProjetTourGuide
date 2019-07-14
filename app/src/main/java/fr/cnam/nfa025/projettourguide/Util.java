@@ -3,6 +3,7 @@ package fr.cnam.nfa025.projettourguide;
 public class Util {
 
 
+    public static final String API_KEY = "AIzaSyC7_Cqp9_ztcxNtz-T6Hia19Tqw4fhKheI";
     public static final String TRACE = "Trace";
 
     //DB sites touristique
@@ -52,5 +53,11 @@ public class Util {
 
 
     public static final String TABLE_DROP_USER =  "DROP TABLE IF EXISTS " + TABLE_USER + ";";
+
+    //log
+    public static final boolean log_SITETOURISTIQUEADAPTER = false;
+    public static final boolean log_MENUACTIVITY = false;
+    public static final boolean log_DATABASEHANDLER = false;
+    public static final boolean log_MONDOA = false;
 
 }

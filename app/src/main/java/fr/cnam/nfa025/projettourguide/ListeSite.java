@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class ListeSite extends Activity {
     SiteTouristiqueAdapter adapter;
     ArrayList<String> listeSiteTouristique;
     Map<Integer, Integer> data;
+    ListView lv_listesite;
 
     @Override
     public void onCreate(Bundle b) {
@@ -57,16 +59,25 @@ public class ListeSite extends Activity {
         adapter = new SiteTouristiqueAdapter(this, arrayOfSites);
 
         // Attach the adapter to a ListView
-        ListView mlistView = (ListView) findViewById(R.id.lv_listesite);
-        mlistView.setAdapter(adapter);
-        mlistView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv_listesite = (ListView) findViewById(R.id.lv_listesite);
+        lv_listesite.setAdapter(adapter);
+        lv_listesite.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        lv_listesite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent localiserCarte_intent = new Intent(ListeSite.this , MapsActivity.class);
-                localiserCarte_intent.putExtra("id_mod", data.get(position));
-                startActivityForResult(localiserCarte_intent, 1);
+                if (((TextView)view.findViewById(R.id.nom_site)).getText().equals("")) return;
+                    else {
+
+                    /*Intent localiserCarte_intent = new Intent(ListeSite.this, MapsActivity.class);
+                    localiserCarte_intent.putExtra("id_mod", data.get(position));
+                    startActivityForResult(localiserCarte_intent, 1);*/
+
+                    Intent iConsulterFiche = new Intent(getApplicationContext(), FicheSiteTouristique.class);
+                    iConsulterFiche.putExtra("ficheSiteTouristique", adapter.getItem(position));
+                    startActivity(iConsulterFiche);
+
+                }
 
             }
         });
@@ -90,9 +101,8 @@ public class ListeSite extends Activity {
             if (cursor.getCount()> 0) {
                 SiteTouristiqueItem nouveauSiteTouristiqueItem = new SiteTouristiqueItem(alphabet_p);
                 adapter.add(nouveauSiteTouristiqueItem);
-                //listeSiteTouristique.add(alphabet_p + "");
-                //Log.i(Util.TRACE, "afficherListe: taille du cursor = " + cursor.getCount() + " OK !!");
-            } else return; // else Log.i(Util.TRACE, "afficherListe: taille du cursor = 0 !!!!!!!!!!!");
+
+            } else return;
 
             if (cursor != null) {
 

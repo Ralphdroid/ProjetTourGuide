@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -76,11 +77,18 @@ public class CalculItineraire extends AsyncTask<Void, Integer, Boolean> {
 	protected Boolean doInBackground(Void... params) {
 		try {
 			//Construction de l'url à appeler			
+			/*
 			final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/xml?sensor=false&language=fr");
 			url.append("&origin=");
 			url.append(editDepart.replace(' ', '+'));
 			url.append("&destination=");
 			url.append(editArrivee.replace(' ', '+'));
+			*/
+
+
+			final StringBuilder url = new StringBuilder("http://maps.googleapis.com/maps/api/directions/json?origin=53.2323832,24.33333&destination=40.33223,20.33333&sensor=false");
+
+			Log.i(Util.TRACE, "[CalculItineraire] => doInBackground: Url= " + url);
 
 			//Appel du web service
 			final InputStream stream = new URL(url.toString()).openStream();
@@ -97,8 +105,9 @@ public class CalculItineraire extends AsyncTask<Void, Integer, Boolean> {
 			//On récupère d'abord le status de la requête
 			final String status = document.getElementsByTagName("status").item(0).getTextContent();
 			if(!"OK".equals(status)) {
+				Log.i(Util.TRACE, "[CalculItineraire] => doInBackground: Status KO !!!!!!!: status: " + status);
 				return false;
-			}
+			} else Log.i(Util.TRACE, "[CalculItineraire] => doInBackground: Status OK !");
 
 			//On récupère les steps
 			final Element elementLeg = (Element) document.getElementsByTagName("leg").item(0);

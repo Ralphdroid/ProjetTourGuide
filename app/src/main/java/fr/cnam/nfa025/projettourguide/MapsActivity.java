@@ -63,8 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Ajout code
         HashMap<String, String> markers = new HashMap<>();
 
-        ArrayList<Marker> arrayMarker = new ArrayList<Marker>();
-
         //Ajout des marqueurs
         for (int i =0; i < arraySites.size(); i++) {
             SiteTouristiqueItem site = arraySites.get(i);
@@ -79,6 +77,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
+
+        //itinéraire
+        //new CalculItineraire(this, mMap, "Tour eiffel", "Arc de triomphe").execute();
 
         /*
         Marker sireneM = mMap.addMarker(new MarkerOptions()

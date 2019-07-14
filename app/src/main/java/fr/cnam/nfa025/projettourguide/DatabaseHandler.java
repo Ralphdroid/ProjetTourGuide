@@ -18,10 +18,14 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
     SQLiteDatabase db;
     String table_name;
     String DROP_TABLE, CREATE_TABLE;
+    boolean showLog = Util.log_DATABASEHANDLER;
 
     public DatabaseHandler(Context context, String table_name_p, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, table_name_p, factory, version);
-        Log.i(Util.TRACE, "[DatabaseHandler] => constructeur !");
+
+        if (showLog)
+            Log.i(Util.TRACE, "[DatabaseHandler] => constructeur !");
+        
         table_name = table_name_p;
 
         if (table_name.equals(Util.TABLE_SITE_TOUTISTIQUE)) {
@@ -41,10 +45,15 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
     public void onCreate(SQLiteDatabase db_p) {
 
         this.db = db_p;
-        Log.i(Util.TRACE, "[DatabaseHandler] => onCreate: !");
+
+        if (showLog)
+            Log.i(Util.TRACE, "[DatabaseHandler] => onCreate: !");
+
         db.execSQL(DROP_TABLE);
 
-        Log.i(Util.TRACE, "[DatabaseHandler] => onCreate: " + table_name + "_CREATE");
+        if (showLog)
+            Log.i(Util.TRACE, "[DatabaseHandler] => onCreate: " + table_name + "_CREATE");
+
         db.execSQL(CREATE_TABLE);
 
     }
@@ -53,7 +62,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        Log.i(Util.TRACE, "[DatabaseHandler] => onUpgrade !");
+        if (showLog)
+            Log.i(Util.TRACE, "[DatabaseHandler] => onUpgrade !");
 
         db.execSQL(DROP_TABLE);
         onCreate(db);
@@ -80,11 +90,14 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
             values.put("password", password_p);
             values.put("preference", preference_p);
             db.insert("user_table", null, values);
-            Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": Values: " + values.size());
+
+            if (showLog)
+                Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": Values: " + values.size());
 
             Cursor c = (Cursor) db.rawQuery("SELECT * FROM " + table_name + " ;", null);
 
-            Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": Ajout => nb = " + c.getCount());
+            if (showLog)
+                Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": Ajout => nb = " + c.getCount());
 
             db.close();
             return true;
@@ -92,7 +105,10 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": l'Ajout s'est mal passé !");
+
+            if (showLog)
+                Log.i(Util.TRACE, "[DatabaseHandler] => addUser: " + table_name + ": l'Ajout s'est mal passé !");
+
             db.close();
             return false;
         }
@@ -144,7 +160,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "[DatabaseHandler] => getUserProfile: Pb dans la réupération des données de l'user !"  );
+            if (showLog)
+                Log.i(Util.TRACE, "[DatabaseHandler] => getUserProfile: Pb dans la réupération des données de l'user !"  );
         }
 
         db.close();
@@ -179,18 +196,23 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Serializable {
 
                             sitesPreferences.add(new SiteTouristiqueItem(id, nom,
                                     latitude, longitude, short_description, theme, description));
-                            Log.i(Util.TRACE, "[DatabaseHandler] => getSitesPreferences: Latitude: " + cursor.getLong(3)  );
+
+                            if (showLog)
+                                Log.i(Util.TRACE, "[DatabaseHandler] => getSitesPreferences: Latitude: " + cursor.getLong(3)  );
 
 
                             // move to next row
                         } while (cursor.moveToNext());
                     }
                 } else
+
+                if (showLog)
                     Log.i(Util.TRACE, "[DatabaseHandler]: getSitesPreferences: la donnée n'a pas réussi à être lue !");
 
             } catch (Exception e) {
 
-                Log.i(Util.TRACE, "[DatabaseHandler]: getSitesPreferences: La table est vide ou pb !");
+                if (showLog)
+                    Log.i(Util.TRACE, "[DatabaseHandler]: getSitesPreferences: La table est vide ou pb !");
             }
 
         }

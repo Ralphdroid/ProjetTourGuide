@@ -20,6 +20,7 @@ public class MenuActivity extends AppCompatActivity {
 
     monDOA siteTourDOA;
     Profile userProfile;
+    Boolean showLog = Util.log_MENUACTIVITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,9 @@ public class MenuActivity extends AppCompatActivity {
 
         //je récupère le profile du user
         userProfile = (Profile)getIntent().getSerializableExtra("user_profile");
-        //Log.i(Util.TRACE, "[MenuActivity] => onCreate: profile du user: " + userProfile.toString());
+
+        if (showLog)
+            Log.i(Util.TRACE, "[MenuActivity] => onCreate: profile du user: " + userProfile.toString());
 
     }
 
@@ -58,7 +61,8 @@ public class MenuActivity extends AppCompatActivity {
 
             text = new String(buffer);
 
-            Log.i(Util.TRACE, "[MenuActivity] => lecteurfichier: " + text); //txtFileName.setText(text);
+            if (showLog)
+                Log.i(Util.TRACE, "[MenuActivity] => lecteurfichier: " + text);
 
         } catch (Exception e) {
             return text;
@@ -79,7 +83,9 @@ public class MenuActivity extends AppCompatActivity {
 
             case R.id.afficherCarte: {
 
-                Intent iMaps = new Intent(MenuActivity.this, MapsActivity.class);
+                //Intent iMaps = new Intent(MenuActivity.this, MapsActivity.class);
+                Intent iMaps = new Intent(MenuActivity.this, PathGoogleMapActivity.class);
+
 
                 //recuperer les sites touristiques en fonction des préférences du user
                 ArrayList<SiteTouristiqueItem> arraySites = getArraySites();

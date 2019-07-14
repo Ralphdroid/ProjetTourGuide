@@ -31,13 +31,10 @@ public class monDOA {
         this.mHandler = new DatabaseHandler(context_p, table_name, null, VERSION);
         SQLiteDatabase checkDB;
 
-        //ligne pour recréer la bd à chaque lancement de la BD
-        //this.mHandler.onCreate(this.mHandler.getWritableDatabase());
-
         //je crée la table si elle n'existe pas...
-
         try {
-            Log.i(Util.TRACE, "[monDOA] => constructeur : " + table_name_p + ": Test existence de la table (apres): La table existe :" + table_name_p);
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => constructeur : " + table_name_p + ": Test existence de la table (apres): La table existe :" + table_name_p);
 
             checkDB = SQLiteDatabase.openDatabase(context_p.getDatabasePath(table_name_p).getPath(),
                     null, SQLiteDatabase.OPEN_READONLY);
@@ -46,7 +43,9 @@ public class monDOA {
 
         } catch (SQLiteException e) {
             // base de données n'existe pas.
-            Log.i(Util.TRACE, "[monDOA] => constructeur : " + table_name_p + ": Test existence de la table (apres): KO elle n'existe pas ! => je la crée !");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => constructeur : " + table_name_p + ": Test existence de la table (apres): KO elle n'existe pas ! => je la crée !");
+
             this.mHandler.onCreate(this.mHandler.getWritableDatabase());
         }
 
@@ -68,13 +67,17 @@ public class monDOA {
 
             Cursor c = (Cursor) mDb.rawQuery("select * from " + table_name_p + ";", null);
 
-            Log.i(Util.TRACE, "[monDOA] => ajouterSiteTouristique: Ajout => nb = " + c.getCount());
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterSiteTouristique: Ajout => nb = " + c.getCount());
+
             return true;
 
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "[monDOA] => ajouterSiteTouristique: l'Ajout s'est mal passé !");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterSiteTouristique: l'Ajout s'est mal passé !");
+
             return false;
         }
 
@@ -94,17 +97,23 @@ public class monDOA {
             values.put("login", login_p);
             values.put("password", password_p);
             mDb.insert(table_name_p, null, values);
-            Log.i(Util.TRACE, "monDOA - " + table_name_p + ": Values: " + values.size());
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "monDOA - " + table_name_p + ": Values: " + values.size());
 
             Cursor c = (Cursor) mDb.rawQuery("select * from " + table_name_p + ";", null);
 
-            Log.i(Util.TRACE, "monDOA - " + table_name_p + ": Ajout => nb = " + c.getCount());
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "monDOA - " + table_name_p + ": Ajout => nb = " + c.getCount());
+
             return true;
 
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "monDOA - " + table_name_p + ": l'Ajout s'est mal passé !");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "monDOA - " + table_name_p + ": l'Ajout s'est mal passé !");
+
             return false;
         }
 
@@ -114,9 +123,13 @@ public class monDOA {
     public void ajouterUnUser(String nom_p, String prenom_p, String sexe_p, String login_p, String password_p, String preference_p) {
 
         if (mHandler.addUser(nom_p, prenom_p, sexe_p, login_p, password_p, preference_p))
-            Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": OK !!");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": OK !!");
         else
-            Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": KO!!!!!!!! !!");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": KO!!!!!!!! !!");
 
     }
 
@@ -124,10 +137,14 @@ public class monDOA {
     public boolean verifUniciteLogin(String login_p) {
 
         if (mHandler.verifLoginUnique(login_p)) {
-            Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": le login n'existe pas DONC je l'ajoute");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": le login n'existe pas DONC je l'ajoute");
             return true;
         } else {
-            Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": le login existe deja");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "[monDOA] => ajouterUnUser - table: " + table_name + ": le login existe deja");
             return false;
         }
 
@@ -137,7 +154,9 @@ public class monDOA {
     public boolean ajouterFromFile(String src_p) {
 
         SQLiteDatabase mDb = this.mHandler.getWritableDatabase();
-        Log.i(Util.TRACE, "[monDOA] => ajouterFromFile: " + src_p);
+
+        if (Util.log_MONDOA)
+            Log.i(Util.TRACE, "[monDOA] => ajouterFromFile: " + src_p);
 
         mDb.execSQL(Util.DELETE_DB);
         mDb.execSQL(src_p);
@@ -146,7 +165,8 @@ public class monDOA {
 
     public boolean modifier (String table_name_p, String nom_p, Integer longitude_p, Integer latitude_p, Integer id_p) {
 
-        Log.i(Util.TRACE, "SiteTouristiqueDOA: la Modification....!!!!!");
+        if (Util.log_MONDOA)
+            Log.i(Util.TRACE, "SiteTouristiqueDOA: la Modification....!!!!!");
         // CODE
         SQLiteDatabase mDb = this.mHandler.getWritableDatabase();
 
@@ -166,7 +186,9 @@ public class monDOA {
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "SiteTouristiqueDOA: la Modification s'est mal passé !");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "SiteTouristiqueDOA: la Modification s'est mal passé !");
+
             return false;
         }
 
@@ -177,27 +199,35 @@ public class monDOA {
     public boolean supprimer(String table_name_p, Integer id_p) {
 
 
-        Log.i(Util.TRACE, "SiteTouristiqueDOA: la Suppression....!!!!!");
+        if (Util.log_MONDOA)
+            Log.i(Util.TRACE, "SiteTouristiqueDOA: la Suppression....!!!!!");
         // CODE
         SQLiteDatabase mDb = this.mHandler.getWritableDatabase();;
 
         try {
 
-            Log.i(Util.TRACE, "SiteTouristiqueDOA: test 1");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "SiteTouristiqueDOA: test 1");
             String strSQL = "DELETE FROM " + table_name_p
 
                     + " WHERE " + Util.KEY + " = " + id_p + ";";
 
-            Log.i(Util.TRACE, "SiteTouristiqueDOA: test 2");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "SiteTouristiqueDOA: test 2");
+
             mDb.execSQL(strSQL);
-            Log.i(Util.TRACE, "SiteTouristiqueDOA: test 3 ");
+
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "SiteTouristiqueDOA: test 3 ");
 
             return true;
 
 
         } catch (Exception e) {
 
-            Log.i(Util.TRACE, "SiteTouristiqueDOA: la Suppression s'est mal passée !");
+            if (Util.log_MONDOA)
+                Log.i(Util.TRACE, "SiteTouristiqueDOA: la Suppression s'est mal passée !");
             return false;
         }
 
